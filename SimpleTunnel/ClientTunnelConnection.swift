@@ -97,7 +97,7 @@ class ClientTunnelConnection: Connection {
             return
         }
         
-        // Pass the tunnel network settings to the delegate.
+        // 将隧道网络设置传递给代理。
         if let configuration = properties[TunnelMessageKey.Configuration.rawValue as NSString] as? [NSObject: AnyObject] {
             delegate.tunnelConnectionDidOpen(self, configuration: configuration)
         }
@@ -106,7 +106,7 @@ class ClientTunnelConnection: Connection {
         }
     }
     
-    /// 将隧道网络设置传递给委托。
+    /// 将数据包发送到虚拟接口以注入到IP堆栈中。
     override func sendPackets(_ packets: [Data], protocols: [NSNumber]) {
         packetFlow.writePackets(packets, withProtocols: protocols)
     }

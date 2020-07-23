@@ -136,6 +136,7 @@ open class Tunnel: NSObject {
 	///从设备上删除连接。
 	func dropConnection(_ connection: Connection) {
 		connections.removeValue(forKey: connection.identifier)
+        
 	}
 
 	/// 关闭所有开放的隧道。
@@ -161,7 +162,7 @@ open class Tunnel: NSObject {
 			 * 
 			 *  0 1 2 3 4 ... Length
 			 * +-------+------------+
-             * |Length | Payload    |
+             * |Length | Payload 负载|
              * +-------+------------+
 			 *
 			 */
@@ -270,7 +271,7 @@ open class Tunnel: NSObject {
 		}
 	}
 
-	/// 处理消息有效负载。
+	/// 处理消息有效负载。  处理包内容
 	func handlePacket(_ packetData: Data) -> Bool {
 		let properties: [String: AnyObject]
 		do {
@@ -304,12 +305,12 @@ open class Tunnel: NSObject {
 			case .data:
 				guard let data = properties[TunnelMessageKey.Data.rawValue] as? Data else { break }
 
-				/* check if the message has properties for host and port */
+				/* 检查消息是否具有主机和端口的属性 */
 				if let host = properties[TunnelMessageKey.Host.rawValue] as? String,
 					let port = properties[TunnelMessageKey.Port.rawValue] as? Int
 				{
 					simpleTunnelLog("Received data for connection \(connection?.identifier) from \(host):\(port)")
-					/* UDP case : send peer's address along with data */
+					/* UDP情况：发送对等方地址和数据 */
 					targetConnection.sendDataWithEndPoint(data, host: host, port: port)
 				}
 				else {

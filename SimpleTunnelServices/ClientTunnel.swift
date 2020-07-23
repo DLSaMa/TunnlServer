@@ -19,7 +19,9 @@ extension NWTCPConnectionState: CustomStringConvertible {
 			case .disconnected: return "Disconnected"
 			case .invalid: return "Invalid"
 			case .waiting: return "Waiting"
-		}
+        @unknown default : return ""
+            
+        }
 	}
 }
 
@@ -44,15 +46,12 @@ open class ClientTunnel: Tunnel {
 
 	/// 启动与隧道服务器的TCP连接。
 	open func startTunnel(_ provider: NETunnelProvider) -> SimpleTunnelError? {
-
-        
         
 		guard let serverAddress = provider.protocolConfiguration.serverAddress else {
 			return .badConfiguration
 		}
         
 		let endpoint: NWEndpoint
-
         //判断 传进来的服务器地址是否合法
 		if let colonRange = serverAddress.rangeOfCharacter(from: CharacterSet(charactersIn: ":"), options: [], range: nil) {
 			// 该服务器在配置中指定为<主机>：<端口>。
@@ -63,11 +62,15 @@ open class ClientTunnel: Tunnel {
 				return .badConfiguration
 			}
 
-			endpoint = NWHostEndpoint(hostname:hostname, port:portString)
+			endpoint = NWHostEndpoint(hostname:hostname, port:portString)//指定使用端点的主机名或IP地址的网络端点。
 		}
 		else {
 			// 该服务器在配置中指定为Bonjour服务名称。
-			endpoint = NWBonjourServiceEndpoint(name: serverAddress, type:Tunnel.serviceType, domain:Tunnel.serviceDomain)
+			endpoint = NWBonjourServiceEndpoint(name: serverAddress, type:Tunnel.serviceType, domain:Tunnel.serviceDomain)//包含使用Bonjour解析的网络端点的规范。
+            /*
+             Bonjour是苹果为基于组播域名服务(multicast DNS)的开放性零设置网络标准所起的名字，能自动发现IP网络上的电脑、设备和服务。Bonjour 使用工业标准的 IP 协议来允许设备自动发现彼此，而不需输入IP 地址或配置DNS 服务器。
+             使用Bonjour的设备在网络中自动传播它们自己的服务信息并聆听其它设备的服务信息，设备之间就象在打招呼，这也是命名为Bonjour(法语：你好)的原因。这样，Bonjour使局域网中的系统和服务即使在没有网络管理员的情况下很容易被找到。
+             */
 		}
 
 		// 启动与服务器的连接。
@@ -96,6 +99,20 @@ open class ClientTunnel: Tunnel {
         /*
          调用targetConnection.readMinimumLength做一个TCP连接的监听, 监听服务器的数据. 调用这个方法可以设置一次性读取多少数据, 这里我们设置成MemoryLayout<UInt32>.size, 也就是4个字节. 之所以这么操作, 是因为这个项目自己写了个协议.
          */
+        
+        /*
+         MemoryLayout  获取数据类型占用内存的大小
+        MemoryLayout<Int>.size //实际占用的内存大小
+        MemoryLayout<Int>.stride //分配的内存大小
+        MemoryLayout<Int>.alignment //内存对齐参数
+
+        MemoryLayout<Int>.size(ofValue: age)
+        MemoryLayout<Int>.stride(ofValue: age)
+        MemoryLayout<Int>.alignment(ofValue: age)
+         */
+    
+        
+        //maximumLength 外部参数 必须写参数名
 		targetConnection.readMinimumLength(MemoryLayout<UInt32>.size, maximumLength: MemoryLayout<UInt32>.size) { data, error in
 			if let readError = error {
 				simpleTunnelLog("Got an error on the tunnel connection: \(readError)")
@@ -171,7 +188,7 @@ open class ClientTunnel: Tunnel {
 				if let remoteAddress = self.connection!.remoteAddress as? NWHostEndpoint {
 					remoteHost = remoteAddress.hostname
 				}
-				// 开始从隧道连接中读取消息。
+				// 开始从隧道连接中读取消息。 ？？？ 文档的意思是读取从服务器回传的数据
 				readNextPacket()
 				// 让代表知道隧道是开放的
 				delegate?.tunnelDidOpen(self)
