@@ -109,5 +109,5 @@ class ClientTunnelConnection: Connection {
     /// 将数据包发送到虚拟接口以注入到IP堆栈中。
     override func sendPackets(_ packets: [Data], protocols: [NSNumber]) {
         packetFlow.writePackets(packets, withProtocols: protocols)
-    }
+    }//方法把数据传回 TUN, 让对应的 APP 收到数据.
 }
