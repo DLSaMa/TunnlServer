@@ -112,7 +112,7 @@ class StatusViewController: UITableViewController {
 		}
 	}
 
-	/// Handle the user toggling the "VPN" switch.
+	///处理用户切换“ VPN”开关。
 	@IBAction func startStopToggled(_ sender: AnyObject) {
 		if targetManager.connection.status == .disconnected || targetManager.connection.status == .invalid {
 			do {

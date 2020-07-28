@@ -3,7 +3,7 @@
 	See LICENSE.txt for this sample’s licensing information
 	
 	Abstract:
-	This file contains the ClientAppProxyTCPConnection and ClientAppProxyUDPConnection classes. The ClientAppProxyTCPConnection class handles the encapsulation and decapsulation of a stream of application network data in the client side of the SimpleTunnel tunneling protocol. The ClientAppProxyUDPConnection class handles the encapsulation and decapsulation of a sequence of datagrams containing application network data in the client side of the SimpleTunnel tunneling protocol.
+	此文件包含ClientAppProxyTCPConnection和ClientAppProxyUDPConnection类。 ClientAppProxyTCPConnection类在SimpleTunnel隧道协议的客户端中处理应用程序网络数据流的封装和解封装。 ClientAppProxyUDPConnection类在SimpleTunnel隧道协议的客户端中处理包含应用程序网络数据的数据报序列的封装和解封装。
 */
 
 import Foundation

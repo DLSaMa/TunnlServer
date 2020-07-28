@@ -2,8 +2,7 @@
 	Copyright (C) 2016 Apple Inc. All Rights Reserved.
 	See LICENSE.txt for this sample’s licensing information
 	
-	Abstract:
-	This file contains the UDPServerConnection class. The UDPServerConnection class handles the encapsulation and decapsulation of datagrams in the server side of the SimpleTunnel tunneling protocol.
+	Abstract:该文件包含UDPServerConnection类。 UDPServerConnection类在SimpleTunnel隧道协议的服务器端处理数据报的封装和解封装。
 */
 
 import Foundation

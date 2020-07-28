@@ -11,7 +11,7 @@ import NetworkExtension
 import SimpleTunnelServices
 
 /// The view controller object for the list of packet tunnel configurations.
-class ConfigurationListController: ListViewController {
+class ConfigurationListController: ListViewController { //首页
 
 	// MARK: Properties
 
